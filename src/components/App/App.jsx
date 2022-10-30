@@ -25,7 +25,7 @@ const STORAGE_KEY = 'contacts';
 
 export default function App() {
   const [contacts, setContacts] = useState(
-    () => JSON.parse(window.localStorage.getItem(STORAGE_KEY)) ?? contactsList
+    JSON.parse(window.localStorage.getItem(STORAGE_KEY)) ?? contactsList
   );
   const [filter, setFilter] = useState('');
 
