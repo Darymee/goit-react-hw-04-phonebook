@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 
 import { ImPhone, ImUser } from 'react-icons/im';
 import {
@@ -39,7 +40,13 @@ export default function ContactForm({ onSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
 
-    onSubmit(name, number);
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    onSubmit(contact);
 
     reset();
   };

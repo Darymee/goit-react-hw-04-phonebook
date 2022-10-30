@@ -1,8 +1,10 @@
-import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 
 import { MdOutlineContactPhone } from 'react-icons/md';
 
+import { STORAGE_KEY } from 'constans/localStorageKey';
+import { contactsList } from 'constans/contactsList';
+import { localStorage } from 'utils/localStorage';
 import ContactForm from '../ContactForm/ContactForm';
 import { ContactsList } from '../ContactsList/ContactsList';
 import { Filter } from 'components/Filter/Filter';
@@ -14,40 +16,26 @@ import {
   ContactsTitle,
 } from './App.styled.js';
 
-const contactsList = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
-
-const STORAGE_KEY = 'contacts';
-
 export default function App() {
   const [contacts, setContacts] = useState(
-    JSON.parse(window.localStorage.getItem(STORAGE_KEY)) ?? contactsList
+    localStorage.getItem(STORAGE_KEY) ?? contactsList
   );
+
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+    localStorage.setItem(STORAGE_KEY, contacts);
   }, [contacts]);
 
-  const addToList = (name, number) => {
+  const addToList = newContact => {
     for (const contact of contacts) {
-      if (contact.name.toLowerCase() === name.toLowerCase()) {
-        alert(`${name} is already in contacts`);
+      if (contact.name.toLowerCase() === newContact.name.toLowerCase()) {
+        alert(`${newContact.name} is already in contacts`);
         return;
       }
     }
 
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-
-    setContacts(prevState => [contact, ...prevState]);
+    setContacts(prevState => [newContact, ...prevState]);
   };
 
   const deleteFromList = contactId => {
